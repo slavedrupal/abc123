@@ -1,0 +1,55 @@
+{#
+/**
+ * @file
+ * Two column template for the checkout form.
+ *
+ * Available variables:
+ * - form: The form.
+ *
+ * @ingroup themeable
+ */
+#}
+<div id="drupalslave-panel" class="drupalslave-shopping-cart">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="drupalslave-panel-main-theme top-bar">
+                    <div class="row">
+                        <div class="col-12 drupalslave-selected-theme">
+                            <h2 class="drupalslave-panel-title">     
+                                Your Themes Cart
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="drupalslave-theme-item-info main-container">
+                  <div class="row">
+                    <div class="col-md-8 order-md-1">
+                        <h4>Order Information</h4>
+                        <div class="row">
+                          <div class="col-12">
+                            {{form | without('actions','sidebar','paypal_smart_payment_buttons')}}
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-6">
+                            {{form.paypal_smart_payment_buttons}}
+                          </div>
+                        </div>
+                    </div>    
+                    <div class="col-md-4 order-md-2 mb-4">
+                        {{ form.sidebar }}
+                        {{ form.form_build_id }}
+                        {{ form.form_id }}
+                        {{ form.actions }}
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+     </div> 
+</div>

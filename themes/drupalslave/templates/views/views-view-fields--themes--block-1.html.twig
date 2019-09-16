@@ -1,0 +1,22 @@
+  <div class="drupalslave-themes-list-item-info">
+    <div class="themes-list-item-image">
+      <div class="inner-box">
+        <div class="image">
+          <img src="{{ fields.field_product_image.content}}" alt="{{ fields.title.content}}" title="{{ fields.title.content}}">
+          <div class="content-overlay">
+            <div class="overlay-inner">
+              <div class="content-box">
+                      <a href="{{fields.field_preview_link.content}}" class="view-detail">Live Preview</a>
+                      <a href="{{ fields.view_commerce_product.content}}" class="view-detail">Buy Theme</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="themes-list-item-content">
+        <h2><a href="{{ fields.view_commerce_product.content}}" class="theme">{{ fields.title.content}}</a><span>Drupal 8 Theme</span></h2>
+        <h3><sup>$</sup>{{ fields.price__number.content}}</h3>
+      </div>
+    </div>
+  </div>

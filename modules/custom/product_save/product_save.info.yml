@@ -1,0 +1,5 @@
+name: Product Save
+type: module
+description: 'Product save after completed the order.'
+core: 8.x
+

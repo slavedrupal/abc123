@@ -1,0 +1,54 @@
+<header id="header" class="header header-white">    
+  <div class="nav-wrapper">
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="navbar-main">
+      <div class="container">     
+        {{page.logo}}
+         
+        <div class="collapse navbar-collapse" id="navbardrupalslaveContent">
+          {{page.primary_menu}}                       
+        </div>
+        {% if logged_in %}
+         <ul class="navbar-nav user-menu">
+            <li class="nav-item dropdown">
+                <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-target="#accountDropdown">
+                  {% if profile_picture %}
+                    <img src="{{profile_picture}}"  class="drupalslave-user-profile-avatar rounded-circle" alt="{{name}}"> 
+                  {% endif %}
+                  <span class="user">Hi, {{name}}</span> 
+                  <i class="fa fa-angle-down"></i>
+                </a>
+                  
+            </li>               
+          </ul>
+          {# {{page.my_account}} #}
+          <ul class="dropdown-menu dropdown-menu-right" id="accountDropdown" role="menu">
+               <li><a href="/user"><i class="fas fa-user"></i> My Account</a></li>
+               <li><a href="/user/logout"><i class="fas fa-lock"></i> Logout</a></li>
+          </ul>
+          {{page.cart}}
+          {% endif %}
+          <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbardrupalslaveContent" aria-controls="navbardrupalslaveContent" aria-expanded="false" aria-label="Toggle navigation"><span class="icon-bar top-bar"></span><span class="icon-bar middle-bar"></span><span class="icon-bar bottom-bar"></span></button>
+
+      </div>
+    </nav>
+  </div>   
+</header>
+
+<section id="page-content">
+  {{ page.highlighted}}
+  <!-- Content Start-->  
+  {{ page.content }} 
+  <!-- Content ENd-->  
+</section>
+   	        	         				          
+
+<section id="copyrights">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 copyrights-info">
+        <p>&copy; 2019. Drupal Slave. All Rights Reserved.</p>
+      </div>        
+    </div>  
+  </div>
+</section>
+<a id="go-to-top" href="#" class="btn btn-primary btn-lg go-to-top" role="button" title="Go To Top"><i class="fas fa-angle-up"></i></a> 		

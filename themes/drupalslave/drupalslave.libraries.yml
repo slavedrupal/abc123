@@ -1,0 +1,23 @@
+global-styling:
+  css:
+    theme:
+      styles/bootstrap.min.css: {}
+      styles/fontawesome/css/all.css: {}
+      styles/animate.css: {}
+      styles/aos.css: {}
+      styles/style.css: {}
+      styles/theme.css: {}
+  js:   
+    js/popper.min.js: {}
+    js/bootstrap.min.js: {}
+    js/scripts.js: {}
+    js/aos.js: {}
+    js/main.js: {}
+    
+  dependencies:
+    - core/jquery 
+    - core/drupalSettings
+    - core/modernizr
+    - core/drupal
+    - core/drupal.ajax
+    - core/views.ajax

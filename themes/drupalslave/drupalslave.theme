@@ -1,0 +1,355 @@
+<?php
+use Drupal\user\Entity\User;
+use Drupal\core\url;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Component\Serialization\Json;
+
+function drupalslave_preprocess_page(&$variables) {  
+  $variables['twitter'] = theme_get_setting('twitter');
+  $variables['facebook'] = theme_get_setting('facebook');
+  $account = \Drupal::currentUser()->getAccount();
+
+ $userCurrent = \Drupal::currentUser();
+    $user = \Drupal\user\Entity\User::load($userCurrent->id());
+    $variables['id'] = $userCurrent->id();
+    $variables['name'] = $user->getUsername();
+    $current_path = \Drupal::service('path.current')->getPath();
+    if($userCurrent->id()){
+      if (!$user->user_picture->isEmpty()) {
+        $variables['profile_picture'] = $user->get('user_picture')->entity->url();
+      }
+      else {
+        $variables['profile_picture'] = '';
+      }
+    }
+    else{
+      if(strpos($current_path, "/product/") !== false){
+        // $response =new RedirectResponse(URL::fromUserInput('/')->toString());
+        drupal_set_message("You Need Sign in to Buy Our Drupal themes");
+        // $response->send();
+      }
+    }
+}
+
+
+function drupalslave_preprocess_html(&$variables) {
+  $current_user = \Drupal::currentUser();
+  $roles = $current_user->getRoles();
+  $role=implode("-", $roles);
+  $variables['role']=$role;
+}
+
+/**
+* Implements hook_preprocess_menu().
+*/
+function drupalslave_preprocess_menu(&$variables, $hook){
+  $current= \Drupal::currentUser();
+  $current_path = \Drupal::service('path.current')->getPath();
+  if ($hook == 'menu__main') {
+    foreach ($variables['items'] as $key => $item) {
+      if(strpos($current_path, "/user/login") !== false && $item['title'] == 'Sign In'){
+           $item['title'] = t('Sign Up');
+           $item['url'] = '/';
+           $variables['items'][$key]=$item;
+      }
+      elseif ($item['title'] == 'Sign In') {
+        if($current->id()){
+          unset($variables['items'][$key]);
+        }
+      }
+    }
+  }
+  if ($hook == 'menu__dashboard_menu') {
+    foreach ($variables['items'] as $key => $item) {
+      if ($item['title'] == 'Order History') {
+        if($current->id()){
+          $item['url'] = '/user/'.$current->id().'/orders';
+          $variables['items'][$key]=$item;
+        }
+      }
+    }
+  }
+}
+
+function drupalslave_form_system_theme_settings_alter(&$form, \Drupal\Core\Form\FormStateInterface &$form_state, $form_id = NULL) {
+  // Work-around for a core bug affecting admin themes. See issue #943212.
+  
+
+
+	$form['drupalslave_settings']['footer'] = array(
+	'#type' => 'details',
+	'#title' => t('Theme Settings'),
+	'#collapsible' => TRUE,
+	'#collapsed' => FALSE,
+	);
+
+	$form ['drupalslave_settings']['footer']['twitter'] = array(
+	'#type'          => 'textfield',
+	'#title'         => t('twitter'),
+	'#default_value' => theme_get_setting('twitter'),
+	'#description'   => t("Place this text in the widget spot on your site."),
+	);
+
+	$form ['drupalslave_settings']['footer']['facebook'] = array(
+	'#type'          => 'textfield',
+	'#title'         => t('facebook'),
+	'#default_value' => theme_get_setting('facebook'),
+	'#description'   => t("Place this text in the widget spot on your site."),
+	);
+  $form['drupalslave_settings']['footer']['keyword'] = [
+  '#type' => 'textarea',
+  '#title' => t('Restrict Email Domain'),
+  '#default_value' => theme_get_setting('keyword'),
+  ];
+  $form['drupalslave_settings']['footer']['username'] = [
+  '#type' => 'textarea',
+  '#title' => t('Restrict Username'),
+  '#default_value' => theme_get_setting('username'),
+  ];
+}
+
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function drupalslave_theme_suggestions_page_alter(array &$suggestions, array $variables) {
+  // Get Request Object.
+  $request = \Drupal::request();
+
+  // If there is HTTP Exception..
+  if ($exception = $request->attributes->get('exception')) {
+    // Get the status code.
+    $status_code = $exception->getStatusCode();
+    if (in_array($status_code, array(401, 403, 404))) {
+      $suggestions[] = 'page__' . $status_code;
+    }
+  }
+}
+
+/**
+* Implements hook_theme().
+*/
+
+function drupalslave_theme(&$existing, $type, $theme, $path) {
+  $hooks = array();
+  $hooks['user_login_form'] = array(
+      'render element' => 'form',
+      'template' => 'user-login-form',
+  );
+  $hooks['user_form'] = array( 
+      'render element' => 'form',
+      'template' => 'bs-user-form'
+  ); 
+  $hooks['user_pass'] = array( 
+      'render element' => 'form',
+      'template' => 'user-pass'
+  ); 
+  $hooks['user_register_form'] = array( 
+      'render element' => 'form',
+      'template' => 'user-register-form'
+  ); 
+  return $hooks;
+}
+
+
+/**
+* Implements hook_form_alter().
+*/
+function drupalslave_form_alter( &$form, &$form_state, $form_id ) {
+  if ( $form_id == 'user_register_form' ) {
+    $form['account']['mail']['#prefix'] ='';
+    $form['account']['name']['#description'] = t( '' );
+    $form['account']['#attributes']['class'] = t( 'col-lg-12' );
+    $form['account']['mail']['#description'] = t( '' );
+    $form['account']['mail']['#size'] = 25;
+    $form['account']['name']['#size'] = 25;
+    $form['account']['name']['#attributes']['placeholder'] = t('Username');
+    $form['account']['mail']['#attributes']['placeholder'] = t('E-mail');
+    
+    $form['actions']['submit']['#value'] = t('Create Account');
+    $form['actions']['submit']['#attributes']['class'][] = 'btn btn-primary btn-block';
+    $form['actions']['#attributes']['class'][] = 'col-lg-12 text-center';
+    
+  }
+  if ( $form_id == 'user_login_form' ) {
+    $form['name']['#description'] = t('');
+    $form['pass']['#description'] = t('');
+    $form['name']['#attributes']['placeholder'] = t('Name');
+    $form['pass']['#attributes']['placeholder'] = t('Password');
+    $form['pass']['#size'] = 25;
+    $form['name']['#size'] = 25;
+    $form['actions']['submit']['#attributes']['class'][] = 'btn btn-primary btn-block';
+
+  }
+  if ( $form_id == 'user_pass' ) {
+    $form['name']['#size'] = 25;
+    $form['actions']['submit']['#attributes']['class'][] = 'btn btn-primary btn-block';
+  }
+  if ($form_id == 'user_form' ) {
+    $form['account']['name']['#access'] = TRUE;
+    $form['account']['mail']['#title_display'] = t('');
+    $form['account']['mail']['#description'] = t('');
+    $form['account']['current_pass']['#title_display'] = t('');
+    $form['account']['current_pass']['#description'] = t('');
+    $form['account']['current_pass']['#suffix'] = '<p>Required if you want to change the Email address or Password above.';
+    $form['field_phone_number']['widget']['#title'] = t('');
+    $form['user_picture']['widget']['0']['#title'] = t('');
+    $form['field_alternate_email']['widget']['0']['value']['#title'] = t('');
+    $form['field_last_name']['widget']['0']['value']['#title'] = t('');
+    $form['field_first_name']['widget']['0']['value']['#title'] = t('');
+    $form['actions']['submit']['#value'] = t('Save');
+    $form['actions']['delete']['#value'] = t('Delete Profile');
+    $form['actions']['submit']['#attributes']['class'][] = 'btn btn-primary';
+  }
+  if (strpos($form_id, 'commerce_order_item_add_to_cart_form') !== false) {
+    $user_id= \Drupal::currentUser()->id();
+    if($user_id){
+      $form['actions']['submit']['#attributes']['class'][]='btn btn-lg btn-primary  add-to-cart';
+      // $form['actions']['submit']['#suffix']='<i class="fas fa-shopping-cart"></i>';
+      $form['actions']['submit']['#value']='+ Cart';
+       $form['actions']['buynow']=[
+        '#type' => 'submit',
+        '#value' => t('Buy Theme'),
+        '#submit' => ['::submitForm','custom_redirect_checkout'],
+        '#attributes' => [
+          'class' => ['btn btn-lg btn-primary buytheme'],
+        ],
+       ];
+    }
+    else{
+      $form['actions']=null;
+      global $base_url;
+      $current_path = \Drupal::currentPage()->getPath();
+      $form['signup']=[
+        '#markup' => '<a href="'.$base_url.'/user/login?destination='.$current_path.'" class="btn btn-lg btn-primary ">Sign In To Purchase</a>',
+      ];
+    }
+  }
+  if (strpos($form_id, 'webform_submission_theme_install_add_form') !== false){
+    $product_id = \Drupal::request()->get('pid');
+    // $product = \Drupal::entityTypeManager()->getStorage('commerce_product')->load($product_id);
+    $user= \Drupal::currentUser();
+    $form['elements']['user_email']['#value']=$user->getEmail();
+    $form['elements']['user_name']['#value']=$user->getAccountName();
+    $form['elements']['theme']['#value']=$product_id;
+  }
+  if (strpos($form_id, 'views_form_commerce_cart_block') !== false){
+    for($i=0;$i<count($form['remove_button'])-1;$i++){
+      $form['remove_button'][$i]['#attributes']['class'][]='delete-product';
+      $form['remove_button'][$i]['#value']='X';
+    }
+  }
+  if (strpos($form_id, 'views_form_commerce_checkout_order_summary') !== false){
+    $form['actions']['submit']['#type']='hidden';
+  }
+  if (strpos($form_id, 'commerce_checkout_flow_multistep') !== false){
+    $form['actions']['next']['#attributes']['class'][]='btn btn-primary';
+  }
+  if (strpos($form_id, 'views_form_commerce_cart_form') !== false){
+    for($i=0;$i<count($form['remove_button'])-1;$i++){
+      $form['remove_button'][$i]['#attributes']['class'][]='btn btn-primary btn-lg remove_button';
+      $form['remove_button'][$i]['#attributes']['style'][]='width:auto';
+      $form['remove_button'][$i]['#value']='Remove Theme';
+    }
+    $form['actions']['#attributes']['style'][]='display: flex';
+    $form['actions']['submit']['#attributes']['class'][]='btn btn-primary btn-lg';
+    $form['actions']['submit']['#attributes']['style'][]='width:100px';
+    $form['actions']['checkout']['#attributes']['class'][]='btn btn-primary btn-lg';
+    $form['actions']['checkout']['#attributes']['style'][]='width:200px';
+  }
+  // dpm($form_id);
+}
+function custom_redirect_checkout($form, &$form_state) {
+  $response = new RedirectResponse(\Drupal::url('commerce_cart.page'));
+  $response->send();
+}
+
+
+function contact_form_validate_custom($form, &$form_state) {
+  $keyword = theme_get_setting('keyword');
+  $email = strtolower($form_state->getValue('email'));
+  $result = preg_split("/\,/", $keyword1);
+  foreach ($result as $res) {
+    if (preg_match("/\b$res\b/", $email )) {
+      $form_state->setErrorByName('email', t('Please enter correct domain name.'));
+    }
+  }
+
+  $username = theme_get_setting('username');
+  $names = strtolower($form_state->getValue('name'));
+  $name = preg_split("/\,/", $username);
+  foreach ($name as $res) {
+    if (preg_match("/\b$res\b/", $names)) {
+      $form_state->setErrorByName('name', t('Please valid name.'));
+    }
+  }
+
+}
+
+function drupalslave_preprocess_views_view_fields(&$variables) {
+  $view = $variables['view'];
+  $row = $variables['row'];
+  if(isset($view->field['field_theme_name_id'])){
+    $field_output = $view->style_plugin
+      ->getField($row->index, 'field_theme_name_id'); 
+    $mname=$field_output->__toString();
+    $ch = curl_init();
+    $timeout = 30; // set to zero for no timeout
+    $_url='https://www.drupal.org/api-d7/node.json?field_project_machine_name='.$mname;
+    curl_setopt ($ch, CURLOPT_URL, $_url);
+    curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+    $file_contents = curl_exec($ch);
+    $response = Json::decode($file_contents);
+    if(is_array($response)){
+      $variables['field_download_count']=$response['list'][0]['field_download_count'];
+      $fkey = key($response['list'][0]['project_usage']);
+      $variables['sites_usage']=$response['list'][0]['project_usage'][$fkey];
+    }
+    curl_close($ch);
+  }
+}
+
+function drupalslave_preprocess_commerce_checkout_form(&$variables){
+  dpm(array_keys($variables['form']));
+  dpm($variables['form']['#form_id']);
+  dpm(array_keys($variables['form']['actions']));
+}
+
+function drupalslave_preprocess_commerce_product(&$variables){
+  $products=$variables['product']['field_purchased_user'];
+  $products1=$variables['product']['title'];
+  $pid=$products1['#object']->get('product_id')->value;
+  $user_id= \Drupal::currentUser()->id();
+  if($user_id){
+    if(isset($products['#object'])){
+      $purchased_users=$products['#object']->get('field_purchased_user')->referencedEntities();
+      $variables['product']['buy']=1;
+      foreach ($purchased_users as $key => $value) {
+        if($value->id()==$user_id){
+          drupal_set_message(t('You Already Buy this Theme'));
+          $variables['product']['variations']=[
+            '#markup' => '<a href="/downloads" class="btn btn-lg btn-primary">Go to Downloads</a>',
+          ];
+          $variables['product']['buy']=0;
+        }
+      }
+    }
+    else{
+      $conn = \Drupal::database();
+      $query = $conn->select('commerce_order', 'co');
+      $query->condition('co.uid', $user_id);
+      $query->join('commerce_order_item', 'coi', 'co.order_id = coi.order_id');
+      $query->fields('coi', ['order_item_id','quantity']);
+      $query->condition('coi.purchased_entity', $pid);
+      $result = $query->execute()->fetchAssoc();
+      if(isset($result['order_item_id'])){
+          $variables['product']['variations']=[
+            '#markup' => '<a href="/cart" class="btn btn-lg btn-primary">Go to cart</a>',
+          ];
+          $variables['product']['buy']=0;
+      }
+    }
+  }
+}
+

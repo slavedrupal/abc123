@@ -1,0 +1,24 @@
+<?php 
+
+
+
+
+
+function product_save_commerce_order_update($order) {
+  if ($order->status == 'completed') {
+    // Order items in the cart.
+    $items = $order->getItems();
+ 
+    $uid = $items[0]->get('uid')->getValue();
+    $result =$uid[0]['target_id'];
+    // Write your custom logic here.
+    $purchasedEntity = $items[0]->getPurchasedEntity();
+    $product = $purchasedEntity->getProduct();
+    $product->set('field_test', $uid );      
+    $product->save();
+  }
+
+
+  
+  
+}

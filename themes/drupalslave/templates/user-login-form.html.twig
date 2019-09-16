@@ -1,0 +1,43 @@
+<section id="drupalslave-panel-wrapper" class="drupalslave-log">
+    <div class="container">
+        <div class="row justify-content-center align-items-center h-100">
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 mx-auto drupalslave-form form-right">
+                <form class="" novalidate="">
+                    <div class="drupalslave-form-title">
+                        <h2>Sign In</h2>
+                    </div>
+                    <div class="drupalslave-log-form">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                {{ form.name }}
+                            </div>
+                            <div class="col-lg-12">
+                                {{ form.pass }}
+                            </div>
+                            <div class="col-lg-12 password-help">
+                                <a href="{{ base_url }}/user/password" alt="Request new password via email">Forgot password?</a>
+                            </div>
+                            <div class="col-lg-12 drupalslave-log-security">
+                                {{ form.captcha }}
+                            </div>
+                            <div class="col-lg-12 text-center">
+                                {{ form.form_build_id }}
+                                {{ form.form_id }}
+                                {{ form.actions }}
+                            </div> 
+                            <div class="col-lg-12 text-center">
+                                Sign with 
+                                    <a class="btn-primary google" href="/user/login/google">
+                                        <i class="fab fa-google-plus-g"></i>
+                                    </a>
+                                    <a class="btn-primary facebook" href="/user/login/facebook">
+                                        <i class="fab fa-facebook-f"></i>
+                                    </a> 
+                            </div>                
+                        </div>
+                    </div>
+                </form>                                
+            </div>             
+        </div>
+    </div>
+</section>

@@ -1,0 +1,66 @@
+{#
+/**
+* @file
+* Default theme implementation to display a menu.
+*
+* Available variables:
+* - menu_name: The machine name of the menu.
+* - items: A nested list of menu items. Each menu item contains:
+*   - attributes: HTML attributes for the menu item.
+*   - below: The menu item child items.
+*   - title: The menu link title.
+*   - url: The menu link url, instance of \Drupal\Core\Url
+*   - localized_options: Menu link localized options.
+*
+* @ingroup templates
+*/
+#}
+{% import _self as menus %}
+
+{#
+ We call a macro which calls itself to render the full tree.
+ @see http://twig.sensiolabs.org/doc/tags/macro.html
+#}
+{{ menus.menu_links(items, attributes, 0) }}
+
+{% macro menu_links(items, attributes, menu_level) %}
+{% import _self as menus %} 
+ 
+   <ul class="navbar-nav">
+      {% for item in items %}
+        {%
+          set classes = [
+          'nav-link',
+          item.is_expanded ? 'menu-item--expanded',
+          item.is_expanded ? 'dropdown',
+          item.is_collapsed ? 'menu-item--collapsed',
+          item.in_active_trail ? 'active',
+          ]
+       %}
+          {# Menu with submenu #}
+          {% if item.below %}
+          <li class="nav-item drop-down">
+            <a {{ item.attributes.addClass( classes,'item') }} href="{{ item.url }}"  data-toggle="dropdown">
+            <div>{{ item.title }} <i class="fa fa-angle-down"></i></div>
+            </a>
+              {# Menu -> Submenu #}
+                <ul class="dropdown-menu" role="menu">
+                {% for item in item.below %}
+                  <li><a class="{{ item.attributes }}" href="{{ item.url }}">{{ item.title }}</a></li>
+                {% endfor %}
+              </ul>
+            </li>  
+          {# Menu without submenu #}
+          {% else %}
+          {# Menu - Link #}
+              
+                <li class="nav-item">
+                <a {{ item.attributes.addClass( classes,'item') }} href="{{ item.url }}">{{ item.title }}</a>
+                </li>
+          {% endif %}
+
+       {% endfor %}
+    </ul>
+    
+ 
+{% endmacro %}

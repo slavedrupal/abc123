@@ -1,0 +1,84 @@
+{#
+/**
+ * @file
+ * Default theme implementation for the checkout progress.
+ *
+ * Available variables:
+ * - steps: An array of steps, where each step has the following keys:
+ *   - id: The step ID.
+ *   - label: The step label.
+ *   - position: 'previous', 'current' or 'next'.
+ *
+ * @ingroup themeable
+ */
+#}
+<div class="container">
+<div class="row">
+ <div class=" col-md-6 col-md-offset-3">
+ 	<div class="progress">
+ 		
+  {% for step in steps %}
+  		{% if steps|length == 4 %}
+  			{% set style = "width: 25%" %}
+  		{% else %}  			
+  			{% set style = "width: 33%" %}
+  		{% endif %}
+  		{% if step.label == "Review" and steps|length != 4 %}
+  			{% set style = "width: 34%" %}
+  		{% endif %}
+  		{% if step.position == "previous" %}
+  			{% set status = "progress-bar 
+   							 progress-bar-striped
+   							 progress-bar-success 
+   							 active" %}
+  		{% elseif step.position == "current" and step.label == "Complete" %}
+  			{% set status = "progress-bar 
+   							 progress-bar-striped
+   							 progress-bar-success
+   							 active" %}
+  		{% elseif step.position == "current" %}
+  			{% set status = "progress-bar 
+   							 progress-bar-striped
+   							 progress-bar-info  
+   							 active" %}
+  		{% else %}
+  			{% set status = "progress-bar bg-progress" %}
+  		{% endif %}
+   		<div class="{{status}}" 
+   			 role="progressbar" 
+   			 aria-valuenow="33" 
+   			 aria-valuemin="0" 
+   			 aria-valuemax="100" 
+   			 style="{{style}}">
+      		{{ step.label }}
+    	</div>
+  {% endfor %}
+  		</div>
+ 	</div>
+</div>
+</div>
+
+{# <ol class="checkout-progress clearfix">
+  {% for step in steps %}
+      <li class="checkout-progress--step checkout-progress--step__{{ step.position }}">{{ step.label }}</li>
+  {% endfor %}
+</ol>
+ #}
+ 
+ <!-- 
+<div class="checkout-wrap">
+  <ul class="checkout-bar">
+
+    <li class="visited first">
+      <a href="#">Login</a>
+    </li>
+    
+    <li class="previous visited">Shipping & Billing</li>
+    
+    <li class="active">Shipping Options</li>
+    
+    <li class="next">Review & Payment</li>
+    
+    <li class="">Complete</li>
+       
+  </ul> -->

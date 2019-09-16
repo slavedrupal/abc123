@@ -1,0 +1,52 @@
+{#
+/**
+ * @file
+ * Default theme implementation for the checkout progress.
+ *
+ * Available variables:
+ * - steps: An array of steps, where each step has the following keys:
+ *   - id: The step ID.
+ *   - label: The step label.
+ *   - position: 'previous', 'current' or 'next'.
+ *
+ * @ingroup themeable
+ */
+#}
+<div class="container">
+<div class="row">
+  <div class="checkout-wrap">
+    <ul class="checkout-bar"> 		
+  {% for step in steps %}
+  		{% if steps|length == 4 %}
+  			{% set style = "width: 25%" %}
+  		{% else %}  			
+  			{% set style = "width: 33%" %}
+  		{% endif %}
+  		{% if step.label == "Review" and steps|length != 4 %}
+  			{% set style = "width: 34%" %}
+  		{% endif %}
+  		{% if step.position == "previous" %}
+  			{% set status = "visited" %}
+  		{% elseif step.position == "current" and step.label == "Complete" %}
+  			{% set status = "active" %}
+  		{% elseif step.position == "current" %}
+  			{% set status = "active" %}
+  		{% else %}
+  			{% set status = "" %}
+  		{% endif %}
+   		<li class="{{status}}">
+      		{{ step.label }}
+    	</li>
+  {% endfor %}
+  		</ul>
+ 	</div>
+</div>
+</div>
+
+{# <ol class="checkout-progress clearfix">
+  {% for step in steps %}
+      <li class="checkout-progress--step checkout-progress--step__{{ step.position }}">{{ step.label }}</li>
+  {% endfor %}
+</ol>
+ #}
+ 

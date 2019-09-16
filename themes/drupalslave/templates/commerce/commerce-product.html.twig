@@ -1,0 +1,9 @@
+<!--                   <img class="etalage_thumb_image img-responsive" 
+                       src="{{ file_url(product_entity.field_theme_image.entity.uri.value) }}" />
+ -->                  
+           <div class="details-left-info">
+              <h3>{{ product.title }}</h3>
+              {{ product.variations }}
+              {{product.variation_price}}
+              <p class="desc"> {{product_entity.body.value|striptags}} </p>
+           </div>

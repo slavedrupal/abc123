@@ -1,0 +1,19 @@
+<style type="text/css">
+#dds-panel-wrapper.dds-log {
+  background: #f9f9f9 url("{{ file_url(content.field_image['#items'].entity.uri.value) }}") center no-repeat;
+  background-size: 1440px;
+}
+</style>
+
+
+<section id="dds-panel-wrapper" class="dds-log">
+	<div class="container h-100">
+		
+	        
+	        	{% if logged_in %}
+					{% else %}
+					{{ render_block('userregistrationform') }}
+					{% endif %}	                                
+	        </div>             
+       
+</section>

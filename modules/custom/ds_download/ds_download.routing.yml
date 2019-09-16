@@ -1,0 +1,6 @@
+ds_download_file.ajax_link_callback:
+  path: '/dowload/theme/{theme_id}'
+  defaults:
+    _controller: '\Drupal\ds_download_file\Controller\DemoFileController::LinkCallback'
+  requirements:
+    _custom_access: '\Drupal\ds_download_file\Controller\DemoFileController::DemoFilePermission'

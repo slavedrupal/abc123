@@ -1,0 +1,10 @@
+<h4 class="d-flex justify-content-between align-items-center">
+      <span>Cart Items</span>
+      <span class="badge badge-secondary badge-pill">{{rows|length}}</span>
+  </h4>
+                      
+<ul class="drupalslave-cart-items">
+    {% for row in rows %}
+        {{row.content}}
+    {% endfor %}
+</ul>

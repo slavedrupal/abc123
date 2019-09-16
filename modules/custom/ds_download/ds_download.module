@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains ds_download_file.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function ds_download_file_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the ds_download_file module.
+    case 'help.page.ds_download_file':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Module for managing theme demo file') . '</p>';
+      return $output;
+
+    default:
+  }
+}

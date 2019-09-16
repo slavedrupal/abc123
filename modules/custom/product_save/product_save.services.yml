@@ -1,0 +1,6 @@
+services:
+  product_save_event_subscriber:
+    class: '\Drupal\product_save\EventSubscriber\OrderCompleteSubscriber'
+    arguments: ['@entity_type.manager']
+    tags:
+      - { name: 'event_subscriber' }

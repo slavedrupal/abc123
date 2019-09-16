@@ -1,0 +1,94 @@
+{#
+/**
+ * @file
+ * Default theme implementation for the completion message.
+ *
+ * Available variables:
+ * - order_entity: The order entity.
+ * - payment_instructions: The payment instructions, if provided.
+ *
+ * @ingroup themeable
+ */
+#}
+<table class="table-hover" style="margin: 15px auto 0 auto; max-width: 768px;">
+  <tbody>
+  <tr>
+    <td>
+      <table class="table-hover" style="margin: 15px auto 0 auto; max-width: 768px;">
+        <tbody>
+        <tr>
+          <td>
+            <a href="{{ url('<front>') }}" style="color: #0e69be; text-decoration: none; font-weight: bold; margin-top: 15px;">{{ order_entity.getStore.label }}</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <table class="table-hover" style="text-align: center; min-width: 450px; margin: 5px auto 0 auto; border: 1px solid #cccccc; border-radius: 5px; padding: 40px 30px 30px 30px;">
+        <tbody>
+        <tr>
+          <td style="font-size: 30px; padding-bottom: 30px">{{ 'Order Complete'|t }}</td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold; padding-top:15px; padding-bottom: 15px; text-align: left; border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc">
+            {{ 'Order #@number details:'|t({'@number': order_entity.getOrderNumber}) }}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            {% block order_items %}
+            <table style="padding-top: 15px; padding-bottom:15px; width: 100%">
+              <tbody style="text-align: left;">
+              {% for order_item in order_entity.getItems %}
+              <tr>
+                <td>
+                  {{ order_item.getQuantity|number_format }} x
+                </td>
+                <td>
+                  <span>{{ order_item.label }}</span>
+                  <span style="float: right;">{{ order_item.getTotalPrice|commerce_price_format }}</span>
+                </td>
+              </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+            {% endblock %}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p style="margin-bottom: 0;">
+              {{ 'Subtotal: @subtotal'|t({'@subtotal': totals.subtotal|commerce_price_format}) }}
+            </p>
+          </td>
+        </tr>
+        {% for adjustment in totals.adjustments %}
+        <tr>
+          <td>
+            <p style="margin-bottom: 0;">
+              {{ adjustment.label }}: {{ adjustment.total|commerce_price_format }}
+            </p>
+          </td>
+        </tr>
+        {% endfor %}
+        <tr>
+          <td>
+            <p style="font-size: 24px; padding-top: 15px; padding-bottom: 5px;">
+              {{ 'Order Total: @total'|t({'@total': order_entity.getTotalPrice|commerce_price_format}) }}
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            {% block additional_information %}
+              {{ 'Thank you for your order!'|t }}
+            {% endblock %}
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+	

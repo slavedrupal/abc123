@@ -1,0 +1,44 @@
+<div id="drupalslave">
+    <div class="drupalcontainer container">
+      <div class="row drupalslave"
+            data-aos="fade-up"
+            data-aos-delay="100">
+        <div class="col-12 drupalslave-col">
+          <div class="drupalslave-main">
+            <div class="drupalslave-main-set" style="position: absolute; right: 50px; top: 35px;">
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <div class="downloaded-theme-list row" >                                                          
+                  <div class="downloaded-theme-list-item" 
+            data-aos="fade-up"
+            data-aos-delay="200">
+                    <div class="row">
+                      <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12" 
+            data-aos="fade-up"
+            data-aos-delay="400">
+                        <img src=" {{ file_url(product.field_product_image.0['#item'].entity.uri.value) }}" 
+                        class="img-fluid" 
+                        alt="{{product.field_product_image.0['#item'].alt}}" 
+                        title="product.field_product_image.0['#item'].title" />
+                      </div>
+                      <div class="col-xl-8 col-lg-8 col-md-6 col-sm-12 col-12">
+                        <div class="themes-list-item-content">
+                          <h2>{{product.title}}</h2>
+                          <h3><sup>$</sup>{{product.variation_price.0}}</h3>
+                            <h4><span>Drupal 8 Theme</span></h4>
+                            {{product.body}}    
+                            {{product.variations }}
+                          <a href="{{product.field_preview_link[0]['#url']}}" class="btn btn-lg btn-primary"><i class="fas fa-eye"></i>  {{product.field_preview_link[0]['#title']}}</a>
+                        </div>
+                      </div>     
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>           
+          </div>
+        </div>      
+      </div>
+    </div>
+</div>  

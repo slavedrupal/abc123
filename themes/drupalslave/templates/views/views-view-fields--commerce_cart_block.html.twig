@@ -1,0 +1,13 @@
+    <li class="row cart-detail">
+      <div class="col-md-4 col-sm-4 col-4 cart-detail-img">
+        <img src="{{fields.field_product_image.content}}">
+      </div>
+      <div class="col-md-8 col-sm-8 col-8 cart-detail-product">
+        <h3><a href="{{fields.view_commerce_product.content}}">{{fields.title.content}}</h3>
+        <p class="desc">Drupal 8 Theme</p>
+        <span class="price"> ${{fields.price__number.content}}</span>
+        <a href="#" class="delete-product" data-toggle="tooltip" aria-describedby="pwdRule" data-placement="bottom" title="Remove Theme"><i class="fas fa-trash-alt"></i></a>      
+        {{fields.remove_button.content}}           
+      </div>
+    </li>
+

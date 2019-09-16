@@ -1,0 +1,43 @@
+section#page-content{
+	margin-top: 85px;
+}
+.tabs.primary{
+	padding: 10px;
+    background: #58bfde;
+    margin-bottom: 10px;
+}
+input.delete-product{
+	color: transparent;
+    right: -9px;
+    background: transparent;
+}
+.user-authenticated-administrator .fixed-top{
+	top: 70px;
+	z-index: 300;
+}
+#drupalslave-panel-wrapper{
+	margin: 30px 0px;
+}
+.drupalslave-log-form .facebook{
+	border: 0px solid aquamarine;
+	border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-left-width: 5px;
+}
+.drupalslave-log-form .google{
+	border: 0px solid aquamarine;
+	border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-right-width: 5px;
+}
+li.cart-detail{
+	list-style: none;
+}
+
+/*Checkout page*/
+.checkout-pane{
+	width: 100%;
+}
+.paypal-powered-by{
+	display: none;
+}

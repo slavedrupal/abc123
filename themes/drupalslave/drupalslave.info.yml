@@ -1,0 +1,29 @@
+name: 'Drupal Slave'
+description: 'Drupal Slave'
+core: 8.x
+type: theme
+base theme: classy
+screenshot: screenshot.png
+
+
+regions:
+  header: 'Header'
+  primary_menu: 'Menu'
+  dashboard_menu: 'Dashboard Menu'
+  my_account: 'My Account'
+  logo: 'Logo'
+  cart: 'Cart'
+  highlighted: 'Highlighted'
+  title: 'Title'
+  content: 'Content'
+  sidebar_first: 'Primary'
+  sidebar_second: 'Secondary'  
+  footer_1: 'Footer about '
+  footer_2: 'Footer Company'
+  footer_3: 'Footer Services'
+  footer_4: 'Footer Logo'
+  copyright: 'Copyright'
+  
+
+libraries:
+  - drupalslave/global-styling
