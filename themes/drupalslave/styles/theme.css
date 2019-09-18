@@ -1,6 +1,9 @@
 section#page-content{
 	margin-top: 85px;
 }
+#block-drupalslave-main-menu{
+	margin-left: auto;
+}
 .tabs.primary{
 	padding: 10px;
     background: #58bfde;
@@ -40,4 +43,16 @@ li.cart-detail{
 }
 .paypal-powered-by{
 	display: none;
+}
+
+input[type=text], select, textarea {
+  padding: 12px 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+label {
+  padding: 12px 12px 12px 0;
+  display: inline-block;
 }

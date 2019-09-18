@@ -311,9 +311,9 @@ function drupalslave_preprocess_views_view_fields(&$variables) {
 }
 
 function drupalslave_preprocess_commerce_checkout_form(&$variables){
-  dpm(array_keys($variables['form']));
-  dpm($variables['form']['#form_id']);
-  dpm(array_keys($variables['form']['actions']));
+  // dpm(array_keys($variables['form']));
+  // dpm($variables['form']['#form_id']);
+  // dpm(array_keys($variables['form']['actions']));
 }
 
 function drupalslave_preprocess_commerce_product(&$variables){

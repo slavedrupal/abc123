@@ -57,8 +57,7 @@ class OrderCompleteSubscriber implements EventSubscriberInterface {
     $items = $order->getItems();
     $user = \Drupal::currentUser();
     $currentUser = $user->id();
-     
-  foreach ($order->getItems() as $order_item) {
+    foreach ($order->getItems() as $order_item) {
      // SetAdjustment to empty initially.
      $order_item->setAdjustments([]);
      $product_variation = $order_item->getPurchasedEntity();
@@ -71,8 +70,8 @@ class OrderCompleteSubscriber implements EventSubscriberInterface {
        $product_type = $product->get('type')->getValue()[0]['target_id'];
        $quantity = $order_item->getQuantity();
        $product_title = $product->getTitle();       
-       $target_ids = $product->get('field_purchased_user')->getValue();    
-        if($title == $product_title){          
+       $target_ids = $product->get('field_purchased_user')->getValue();  
+        if($title == $product_title){    
          $product->get('field_purchased_user')->appendItem($currentUser);
          $product->save();        
         } 
@@ -90,30 +89,19 @@ class OrderCompleteSubscriber implements EventSubscriberInterface {
     $arg    = explode('/',$path);    
     $user   = \Drupal::currentUser();
     $currentUser = $user->id();
-    
-      $product = Product::load($arg[2]); 
-      if ($product){
+    foreach ($result as $value) {
+      $product = Product::load($value); 
+      $product_title = $product->getTitle();
+      $path_value = str_replace('-', ' ', strtolower($arg[2]));
+      $title = strtolower($product_title);
+      if ($path_value == $title){
         $target_ids = $product->get('field_purchased_user')->getValue();
         $user_ids = array_column($target_ids, 'target_id');          
         if (in_array($currentUser, $user_ids)) {
           return AccessResult::forbidden();
         }   
       }
-    
-
-    // foreach ($result as $value) {
-    //   $product = Product::load($value); 
-    //   $product_title = $product->getTitle();
-    //   $path_value = str_replace('-', ' ', strtolower($arg[2]));
-    //   $title = strtolower($product_title);
-    //   if ($path_value == $title){
-    //     $target_ids = $product->get('field_purchased_user')->getValue();
-    //     $user_ids = array_column($target_ids, 'target_id');          
-    //     if (in_array($currentUser, $user_ids)) {
-    //       return AccessResult::forbidden();
-    //     }   
-    //   }
-    // }     
+    }     
 
       $response = new AjaxResponse();
       $response->addCommand(new AlertCommand(t('This is from an ajax callback')));
@@ -128,29 +116,19 @@ class OrderCompleteSubscriber implements EventSubscriberInterface {
     $arg    = explode('/',$path);    
     $user   = \Drupal::currentUser();
     $currentUser = $user->id();
-
-    $product = Product::load($arg[2]); 
-    if ($product){
-      $target_ids = $product->get('field_purchased_user')->getValue();
-      $user_ids = array_column($target_ids, 'target_id');          
-      if (in_array($currentUser, $user_ids)) {
-        return AccessResult::forbidden();
-      }   
-    }
-    
-    // foreach ($result as $value) {
-    //   $product = Product::load($value); 
-    //   $product_title = $product->getTitle();
-    //   $path_value = str_replace('-', ' ', strtolower($arg[2]));
-    //   $title = strtolower($product_title);
-    //   if ($path_value == $title){
-    //     $target_ids = $product->get('field_purchased_user')->getValue();
-    //     $user_ids = array_column($target_ids, 'target_id');          
-    //     if (in_array($currentUser, $user_ids)) {
-    //       print 'test';
-    //     }   
-    //   }
-    // }     
+    foreach ($result as $value) {
+      $product = Product::load($value); 
+      $product_title = $product->getTitle();
+      $path_value = str_replace('-', ' ', strtolower($arg[2]));
+      $title = strtolower($product_title);
+      if ($path_value == $title){
+        $target_ids = $product->get('field_purchased_user')->getValue();
+        $user_ids = array_column($target_ids, 'target_id');          
+        if (in_array($currentUser, $user_ids)) {
+          print 'test';
+        }   
+      }
+    }     
 
       $response = new AjaxResponse();
       $response->addCommand(new AlertCommand(t('This is from an ajax callback')));

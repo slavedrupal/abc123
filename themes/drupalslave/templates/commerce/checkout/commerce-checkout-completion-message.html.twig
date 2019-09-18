@@ -10,27 +10,27 @@
  * @ingroup themeable
  */
 #}
-<table class="table-hover" style="margin: 15px auto 0 auto; max-width: 768px;">
+<table class="table table-hover" style="margin: 15px auto 0 auto; max-width: 768px;">
   <tbody>
   <tr>
     <td>
-      <table class="table-hover" style="margin: 15px auto 0 auto; max-width: 768px;">
+      <table class="table table-hover" style="margin: 15px auto 0 auto; max-width: 768px;">
         <tbody>
         <tr>
           <td>
-            <a href="{{ url('<front>') }}" style="color: #0e69be; text-decoration: none; font-weight: bold; margin-top: 15px;">{{ order_entity.getStore.label }}</a>
+            <h4 style="color: #0e69be; text-decoration: none; font-weight: bold; margin-top: 15px;">{{ order_entity.getStore.label }}</h4>
           </td>
         </tr>
         </tbody>
       </table>
-      <table class="table-hover" style="text-align: center; min-width: 450px; margin: 5px auto 0 auto; border: 1px solid #cccccc; border-radius: 5px; padding: 40px 30px 30px 30px;">
+      <table class="table table-hover" style="text-align: center;  max-width: 768px; margin: 5px auto 0 auto; border: 1px solid #cccccc; border-radius: 5px; padding: 40px 30px 30px 30px;">
         <tbody>
         <tr>
-          <td style="font-size: 30px; padding-bottom: 30px">{{ 'Order Complete'|t }}</td>
+          <td style="font-size: 30px; padding-bottom: 30px">{{ 'Purchase Complete'|t }}</td>
         </tr>
         <tr>
           <td style="font-weight: bold; padding-top:15px; padding-bottom: 15px; text-align: left; border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc">
-            {{ 'Order #@number details:'|t({'@number': order_entity.getOrderNumber}) }}
+            {{ 'Purchase #@number details:'|t({'@number': order_entity.getOrderNumber}) }}
           </td>
         </tr>
         <tr>
@@ -40,9 +40,6 @@
               <tbody style="text-align: left;">
               {% for order_item in order_entity.getItems %}
               <tr>
-                <td>
-                  {{ order_item.getQuantity|number_format }} x
-                </td>
                 <td>
                   <span>{{ order_item.label }}</span>
                   <span style="float: right;">{{ order_item.getTotalPrice|commerce_price_format }}</span>

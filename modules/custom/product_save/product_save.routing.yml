@@ -1,5 +1,5 @@
 product_save.download:
-  path: '/theme-download/{theme_id}'
+  path: '/theme-demo-download/{name}'
   defaults:
     _controller: '\Drupal\product_save\EventSubscriber\OrderCompleteSubscriber::Render'
     _title: 'Theme Download'

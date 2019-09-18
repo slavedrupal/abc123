@@ -42,7 +42,7 @@
           {% if item.below %}
           <li class="nav-item drop-down">
             <a {{ item.attributes.addClass( classes,'item') }} href="{{ item.url }}"  data-toggle="dropdown">
-            <div>{{ item.title }} <i class="fa fa-angle-down"></i></div>
+            {{ item.title }} <i class="fa fa-angle-down"></i>
             </a>
               {# Menu -> Submenu #}
                 <ul class="dropdown-menu" role="menu">
